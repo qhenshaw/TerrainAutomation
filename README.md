@@ -9,9 +9,9 @@ Rapidly iterate on terrain designs by procedurally placing trees and details bas
 ### Unified Control
 Control important terrain properties through a single component - apply height/splat maps, configure size, and assign layers, trees, and details. Configuration is saved in a profile asset that can be shared between terrains/scenes.  
 <div align="center">
-  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/9508c891-896f-4748-a4c1-2494a9c3e8aa" width="300" alt="animated">
-  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/1ec6b106-d9e0-40bd-9adf-18f742088a72" width="300">
-  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/f5440a74-c29d-48ff-b6f0-923e53fc3c77" width="300">
+  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/9508c891-896f-4748-a4c1-2494a9c3e8aa" width="200" alt="animated">
+  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/1ec6b106-d9e0-40bd-9adf-18f742088a72" width="200">
+  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/f5440a74-c29d-48ff-b6f0-923e53fc3c77" width="200">
 </div>
 
 ### One-Touch Generation
@@ -26,8 +26,8 @@ Apply terrain stamps in the form of subtractive or additive heightmaps to add hi
 Draw splines with the path component to add paths and roads.  
 Modifications through this system are non-destructive, the components can be freely moved and the terrain regenerated in seconds to see the results.
 <div align="center">
-  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/6fe170c1-e669-489c-b5c0-a4a2e597b282" width="450">
-  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/799649b7-ec63-4982-b9d9-4b648257b18f" width="450">
+  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/6fe170c1-e669-489c-b5c0-a4a2e597b282" width="300">
+  <img align="top" src="https://github.com/qhenshaw/TerrainAutomation/assets/911416/799649b7-ec63-4982-b9d9-4b648257b18f" width="300">
 </div>
 
 ### Terrain System Compatibility
