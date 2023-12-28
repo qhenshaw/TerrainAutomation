@@ -1,32 +1,22 @@
 {
-  "displayName": "[Package Name]",
+  "displayName": "Terrain Automation",
   "author": "Quin Henshaw",
-  "version": "1.0.0",
-  "name": "com.qhenshaw.[packagename]",
-  "documentationUrl": "https://github.com/qhenshaw/[repourl]",
-  "changelogUrl": "https://github.com/qhenshaw/[repourl]/blob/main/CHANGELOG.md",
-  "licensesUrl": "https://github.com/qhenshaw/[repourl]/blob/main/LICENSE.md",
-  "description": "[Description here]",
-  "unity": "2020.1",
+  "version": "0.1.0",
+  "name": "com.qhenshaw.terrainautomation",
+  "documentationUrl": "https://github.com/qhenshaw/TerrainAutomation",
+  "changelogUrl": "https://github.com/qhenshaw/TerrainAutomation/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/qhenshaw/TerrainAutomation/blob/main/LICENSE.md",
+  "description": "A set of tools for rapid terrain iteration.",
+  "unity": "2023.1",
   "dependencies": {
-    "com.unity.2d.sprite": "1.0.0",
-	"com.unity.ugui": "1.0.0"
+    "com.unity.splines": "2.0.0",
+	"com.unity.mathematics": "1.0.0"
   },
   "samples": [
-	{
-      "displayName": "[Sample 1 display name]",
-      "description": "[Sample 1 description]",
-      "path": "Samples~/[Sample1Location]"
-    },
     {
-      "displayName": "[Sample 2 display name]",
-      "description": "[Sample 2 description]",
-      "path": "Samples~/[Sample2Location]"
-    },
-	{
-      "displayName": "[Sample 3 display name]",
-      "description": "[Sample 3 description]",
-      "path": "Samples~/[Sample3Location]"
+      "displayName": "Shaders",
+      "description": "Terrain detail and 'Tree It' tree shaders.",
+      "path": "Samples~/Shaders"
     }
   ]
 }
