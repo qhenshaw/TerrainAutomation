@@ -48,7 +48,7 @@ I strongly recommend using a version with [APV (probe volume)](https://portal.pr
 ## Installation
 Use the Package Manager and use Add package from git URL, using the following: 
 ```
-https://github.com/qhenshaw/TerrainAutomation.git)https://github.com/qhenshaw/TerrainAutomation.git
+https://github.com/qhenshaw/TerrainAutomation.git
 ```
 
 ## Usage
