@@ -1,6 +1,8 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -64,8 +66,8 @@ namespace TerrainAutomation
         [ButtonGroup("Update/ButtonsTop"), Button("All", ButtonSizes.Large, Icon = SdfIconType.Recycle, Stretch = false)]
         public void UpdateAll()
         {
-            UpdateHeightMap();
             AssignTerrainLayers();
+            UpdateHeightMap();
             UpdateSplatmap();
             PlaceTrees();
             PlaceDetails();
