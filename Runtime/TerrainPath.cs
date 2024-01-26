@@ -174,12 +174,14 @@ namespace TerrainAutomation
 
             Gizmos.DrawWireCube(_bounds.center, _bounds.size);
 
-            float screenSize = tm.GetScreenSize(_bounds);
-            float screenScale = Mathf.Clamp(screenSize * 1f, 0.1f, 1f);
-            float invScreenScale = 1f / screenScale;
-
+            Vector3 cameraPosition = Camera.main.transform.position;
+#if UNITY_EDITOR
+            cameraPosition = SceneView.lastActiveSceneView.camera.transform.position;
+#endif
+            Vector3 closestPoint = _bounds.ClosestPoint(cameraPosition);
+            float boundsDistance = Vector3.Distance(cameraPosition, closestPoint);
+            float stepDistance = Mathf.Clamp(boundsDistance / 4f, 4f, 20f);
             float4x4 TRS = float4x4.TRS(transform.position, transform.rotation, transform.localScale);
-            float stepDistance = 4f * invScreenScale;
 
             foreach (Spline spline in _splineContainer.Splines)
             {

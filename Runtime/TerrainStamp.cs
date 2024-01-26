@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -131,21 +132,30 @@ namespace TerrainAutomation
             ITerrainModifier tm = this;
             if (!tm.IsVisible(_box.bounds)) return;
 
-            float screenSize = tm.GetScreenSize(_box.bounds);
-            float screenScale = Mathf.Clamp(screenSize * 1f, 0.1f, 1f);
-            float invScreenScale = 1f / screenScale;
+            Vector3 cameraPosition = Camera.main.transform.position;
+#if UNITY_EDITOR
+            cameraPosition = SceneView.lastActiveSceneView.camera.transform.position;
+#endif
+            int maxCount = 32;
+            int maxX = Mathf.Min(Mathf.RoundToInt(_box.size.x), maxCount);
+            int maxZ = Mathf.Min(Mathf.RoundToInt(_box.size.z), maxCount);
 
-            int xCount = Mathf.FloorToInt(_box.size.x * screenScale);
-            int zCount = Mathf.FloorToInt(_box.size.z * screenScale);
+            float stepX = Mathf.Max(_box.size.x / maxX, 1f);
+            float stepZ = Mathf.Max(_box.size.z / maxZ, 1f);
+            int xCount = Mathf.FloorToInt(_box.size.x / stepX);
+            int zCount = Mathf.FloorToInt(_box.size.z / stepZ);
 
-            Vector3[] points = new Vector3[zCount];
+            List<Vector3> points = new List<Vector3>();
 
             for (int x = 0; x < xCount; x++)
             {
+                points.Clear();
+
                 for (int z = 0; z < zCount; z++)
                 {
-                    Vector3 position = Min + x * transform.right * invScreenScale + z * transform.forward * invScreenScale;
+                    Vector3 position = Min + stepX * x * transform.right + stepZ * z * transform.forward;
                     position.y = Min.y;
+                    if (!tm.IsVisible(position)) continue;
                     float normX = InverseLerp(Min, XCorner, position) + 1f;
                     float normY = InverseLerp(Min, ZCorner, position) + 1f;
                     Vector2Int pos = new Vector2Int(Mathf.RoundToInt(normX * _stamp.width), Mathf.RoundToInt(normY * _stamp.height));
@@ -154,10 +164,10 @@ namespace TerrainAutomation
                     float height = texHeight * _box.size.y * _heightMultiplier + Min.y;
                     if (Mode == StampMode.Subtract) height = -texHeight * _box.size.y * _heightMultiplier + Max.y;
                     Vector3 point = new Vector3(position.x, height, position.z);
-                    points[z] = point;
+                    points.Add(point);
                 }
 
-                Gizmos.DrawLineStrip(points, false);
+                Gizmos.DrawLineStrip(points.ToArray(), false);
             }
         }
 
