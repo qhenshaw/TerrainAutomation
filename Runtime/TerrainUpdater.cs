@@ -37,7 +37,7 @@ namespace TerrainAutomation
                         worldPosition.y = worldHeight;
                         if (stamp.GetHeight(worldPosition, out float stampHeight))
                         {
-                            float normalizedStampHeight = Mathf.InverseLerp(terrainPosition.y, terrainPosition.y + terrainSize.y, stampHeight);
+                            float normalizedStampHeight = (stampHeight - terrainPosition.y) / terrainSize.y;
                             height = normalizedStampHeight;
                         }
                     }

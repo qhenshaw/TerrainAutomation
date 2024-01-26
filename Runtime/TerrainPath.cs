@@ -54,9 +54,8 @@ namespace TerrainAutomation
 
             Vector3 localPosition = transform.InverseTransformPoint(position);
             float distance = GetMinDistanceToSplines(localPosition, out float3 nearest, out float t);
-            Vector3 flatNearest = nearest;
-            flatNearest.y = position.y;
-            float flatDistance = Vector3.Distance(position, flatNearest);
+            Vector3 flatNearest = new Vector3(nearest.x, localPosition.y, nearest.z);
+            float flatDistance = Vector3.Distance(localPosition, flatNearest);
             if (flatDistance > halfWidth || (!_ignoreTerrainHeight && distance > halfWidth))
             {
                 height = 0f;
@@ -64,10 +63,9 @@ namespace TerrainAutomation
             }
 
             Vector3 worldPos = transform.TransformPoint(nearest);
-            float distanceNormalized = distance / halfWidth;
+            float distanceNormalized = (_ignoreTerrainHeight ? flatDistance : distance) / halfWidth;
             height = worldPos.y + Mathf.Lerp(_height.y, _height.x, _heightCurve.Evaluate(distanceNormalized));
             float falloff = _falloff.Evaluate(distanceNormalized);
-            if (_ignoreTerrainHeight) falloff = 1f;
             height = Mathf.Lerp(position.y, height, falloff);
             return true;
         }
