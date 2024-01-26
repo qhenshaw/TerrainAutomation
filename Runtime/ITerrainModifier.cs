@@ -20,17 +20,14 @@ namespace TerrainAutomation
             return false;
         }
 
-        float GetScreenSize(Bounds bounds)
+        bool IsVisible(Vector3 point)
         {
 #if UNITY_EDITOR
-            Vector3 min = bounds.min;
-            Vector3 max = bounds.max;
-            Camera cam = UnityEditor.SceneView.currentDrawingSceneView.camera;
-            Vector2 screenMin = cam.WorldToViewportPoint(min);
-            Vector2 screenMax = cam.WorldToViewportPoint(max);
-            return (screenMax - screenMin).magnitude;
+            Vector3 viewPortPoint = UnityEditor.SceneView.currentDrawingSceneView.camera.WorldToViewportPoint(point);
+            bool visible = viewPortPoint.x > 0 && viewPortPoint.x < 1f && viewPortPoint.y > 0 && viewPortPoint.y < 1f;
+            return visible;
 #endif
-            return 0f;
+            return false;
         }
     }
 }

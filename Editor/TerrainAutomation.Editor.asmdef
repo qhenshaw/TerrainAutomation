@@ -1,0 +1,18 @@
+{
+    "name": "TerrainAutomation.Editor",
+    "rootNamespace": "TerrainAutomation.Editor",
+    "references": [
+        "GUID:70cbd00ba62ecdb41b385bdc8e6369c3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
