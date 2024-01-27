@@ -1,7 +1,7 @@
 {
   "displayName": "Terrain Automation",
   "author": "Quin Henshaw",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "name": "com.qhenshaw.terrainautomation",
   "documentationUrl": "https://github.com/qhenshaw/TerrainAutomation",
   "changelogUrl": "https://github.com/qhenshaw/TerrainAutomation/blob/main/CHANGELOG.md",
@@ -10,7 +10,8 @@
   "unity": "2023.1",
   "dependencies": {
     "com.unity.splines": "2.0.0",
-	"com.unity.mathematics": "1.0.0"
+	"com.unity.mathematics": "1.0.0",
+	"com.unity.render-pipelines.high-definition": "15.0.0"
   },
   "samples": [
     {
