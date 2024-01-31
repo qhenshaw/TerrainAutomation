@@ -145,6 +145,7 @@ namespace TerrainAutomation
                 for (int i = 0; i <= stepCount; i++)
                 {
                     Vector3 position = spline.EvaluatePosition(i * step);
+                    position += transform.position;
                     bounds.Encapsulate(position);
                 }
             }
@@ -194,6 +195,7 @@ namespace TerrainAutomation
                 {
                     float t = i * step;
                     Vector3 position = spline.EvaluatePosition(t);
+                    position += transform.position;
                     float3 tan = spline.EvaluateTangent(t);
                     Vector3 tanget = ((Vector3)tan).normalized;
                     Vector3 normal = Vector3.Cross(Vector3.up, tanget);
