@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 namespace TerrainAutomation
 {
@@ -23,6 +25,9 @@ namespace TerrainAutomation
 
         public static void PlaceTrees(Terrain terrain, List<TreeLayerConfig> trees, int seed, int count, bool keepExistingTrees)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             AssignTrees(terrain, trees);
 
             // initialize from (random) seed
@@ -97,7 +102,8 @@ namespace TerrainAutomation
                 successCount++;
             }
 
-            Debug.Log($"{successCount} trees placed.");
+            timer.Stop();
+            Debug.Log($"Update trees time: {timer.Elapsed.TotalSeconds}");
         }
 
         private static Color SampleTexture(Texture2D texture, Vector2 position)

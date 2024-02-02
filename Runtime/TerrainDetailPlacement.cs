@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 namespace TerrainAutomation
 {
@@ -38,6 +40,9 @@ namespace TerrainAutomation
 
         public static void PlaceDetails(Terrain terrain, List<DetailLayerConfig> layers)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             UpdateDetails(terrain, layers);
 
             // get terrain data
@@ -92,6 +97,9 @@ namespace TerrainAutomation
 
                 data.SetDetailLayer(0, 0, i, layer);
             }
+
+            timer.Stop();
+            Debug.Log($"Update details time: {timer.Elapsed.TotalSeconds}");
         }
     }
 }
