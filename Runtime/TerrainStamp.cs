@@ -1,6 +1,8 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -22,12 +24,16 @@ namespace TerrainAutomation
         [SerializeField] private float _heightMultiplier = 1f;
         [field: SerializeField] public StampMode Mode = StampMode.Max;
         [SerializeField] private BoxCollider _box;
+        [SerializeField] private int _gizmoResolution = 24;
 
         public Vector3 Min => _box.bounds.center - new Vector3(0f, _box.size.y * 0.5f, 0f) - transform.right * _box.size.x * 0.5f - transform.forward * _box.size.z * 0.5f;
         public Vector3 Max => _box.bounds.center + new Vector3(0f, _box.size.y * 0.5f, 0f) + transform.right * _box.size.x * 0.5f + transform.forward * _box.size.z * 0.5f;
 
         public Vector3 XCorner => Min + transform.right * _box.size.x;
         public Vector3 ZCorner => Min + transform.forward * _box.size.z;
+
+        private List<Vector3> _verts = new List<Vector3>();
+        private List<int> _tris = new List<int>();
 
         private void OnValidate()
         {
@@ -132,30 +138,21 @@ namespace TerrainAutomation
             ITerrainModifier tm = this;
             if (!tm.IsVisible(_box.bounds)) return;
 
-            Vector3 cameraPosition = Camera.main.transform.position;
-#if UNITY_EDITOR
-            cameraPosition = SceneView.lastActiveSceneView.camera.transform.position;
-#endif
-            int maxCount = 32;
-            int maxX = Mathf.Min(Mathf.RoundToInt(_box.size.x), maxCount);
-            int maxZ = Mathf.Min(Mathf.RoundToInt(_box.size.z), maxCount);
+            int gridCount = _gizmoResolution;
+            float stepX = _box.size.x / gridCount;
+            float stepZ = _box.size.z / gridCount;
+            int totalCount = gridCount * gridCount;
 
-            float stepX = Mathf.Max(_box.size.x / maxX, 1f);
-            float stepZ = Mathf.Max(_box.size.z / maxZ, 1f);
-            int xCount = Mathf.FloorToInt(_box.size.x / stepX);
-            int zCount = Mathf.FloorToInt(_box.size.z / stepZ);
+            _verts.Clear();
+            _tris.Clear();
 
-            List<Vector3> points = new List<Vector3>();
-
-            for (int x = 0; x < xCount; x++)
+            //Bottom left section of the map, other sections are similar
+            for (int x = 0; x < gridCount; x++)
             {
-                points.Clear();
-
-                for (int z = 0; z < zCount; z++)
+                for (int z = 0; z < gridCount; z++)
                 {
                     Vector3 position = Min + stepX * x * transform.right + stepZ * z * transform.forward;
                     position.y = Min.y;
-                    if (!tm.IsVisible(position)) continue;
                     float normX = InverseLerp(Min, XCorner, position) + 1f;
                     float normY = InverseLerp(Min, ZCorner, position) + 1f;
                     Vector2Int pos = new Vector2Int(Mathf.RoundToInt(normX * _stamp.width), Mathf.RoundToInt(normY * _stamp.height));
@@ -164,11 +161,27 @@ namespace TerrainAutomation
                     float height = texHeight * _box.size.y * _heightMultiplier + Min.y;
                     if (Mode == StampMode.Subtract) height = -texHeight * _box.size.y * _heightMultiplier + Max.y;
                     Vector3 point = new Vector3(position.x, height, position.z);
-                    points.Add(point);
-                }
 
-                Gizmos.DrawLineStrip(points.ToArray(), false);
+                    //Add each new vertex in the plane
+                    _verts.Add(point);
+                    //Skip if a new square on the plane hasn't been formed
+                    if (x == 0 || z == 0) continue;
+                    //Adds the index of the three vertices in order to make up each of the two tris
+                    _tris.Add(gridCount * x + z); //Top right
+                    _tris.Add(gridCount * x + z - 1); //Bottom right
+                    _tris.Add(gridCount * (x - 1) + z - 1); //Bottom left - First triangle
+                    _tris.Add(gridCount * (x - 1) + z - 1); //Bottom left 
+                    _tris.Add(gridCount * (x - 1) + z); //Top left
+                    _tris.Add(gridCount * x + z); //Top right - Second triangle
+                }
             }
+
+            Mesh mesh = new Mesh();
+            mesh.SetVertices(_verts);
+            mesh.SetTriangles(_tris, 0);
+            mesh.RecalculateBounds();
+            mesh.RecalculateNormals();
+            Gizmos.DrawWireMesh(mesh);
         }
 
 #if UNITY_EDITOR
